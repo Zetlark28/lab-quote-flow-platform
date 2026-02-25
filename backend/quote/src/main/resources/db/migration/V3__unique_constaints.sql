@@ -1,0 +1,1 @@
+ALTER TABLE outbox_event ADD CONSTRAINT unique_aggregate_event UNIQUE (aggregate_type, aggregate_id, event_type, status);

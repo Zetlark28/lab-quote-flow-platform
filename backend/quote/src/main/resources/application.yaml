@@ -1,0 +1,23 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: quote
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/${POSTGRES_DB:postgres-quote}?stringtype=unspecified
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+
+    enabled: true
+    locations: classpath:db/migration #path of files that would be processed by flyway
+    baseline-on-migrate: true
