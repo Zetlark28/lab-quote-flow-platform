@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Typography, Card, Descriptions, Button, Space, Spin, Alert
+  Typography, Card, Descriptions, Button, Space, Spin, Alert, Popconfirm, message,
 } from 'antd';
 import { useQuoteDetail } from '../hooks/useQuoteDetail';
 import QuoteStatusTag from '../components/QuoteStatusTag';
@@ -14,6 +14,7 @@ export default function QuoteDetailPage() {
   const {
     quote, loading, error,
     fetchQuote, approvalLoading, approvalError, submitToApproval,
+    deleteLoading, removeQuote,
   } = useQuoteDetail(id);
 
   useEffect(() => {
@@ -21,10 +22,21 @@ export default function QuoteDetailPage() {
   }, [fetchQuote]);
 
   const canSendToApproval = quote?.status === 'DRAFT' || quote?.status === 'REJECTED';
+  const canEdit = quote?.status === 'DRAFT' || quote?.status === 'REJECTED';
+
+  const handleDelete = async () => {
+    try {
+      await removeQuote();
+      message.success('Quote deleted');
+      navigate('/quotes');
+    } catch {
+      message.error('Failed to delete quote');
+    }
+  };
 
   return (
     <div>
-      <Space style={{ marginBottom: 16 }}>
+      <Space style={{ marginBottom: 16 }} wrap>
         <Button onClick={() => navigate('/quotes')}>← Back to Quotes</Button>
       </Space>
 
@@ -38,17 +50,17 @@ export default function QuoteDetailPage() {
 
       {quote && !loading && (
         <Card>
-          <Descriptions bordered column={1} style={{ marginBottom: 24 }}>
+          <Descriptions bordered column={{ xs: 1, sm: 1, md: 2 }} style={{ marginBottom: 24 }}>
             <Descriptions.Item label="ID">{quote.id}</Descriptions.Item>
-            <Descriptions.Item label="Description">{quote.description}</Descriptions.Item>
+            <Descriptions.Item label="Status">
+              <QuoteStatusTag status={quote.status} />
+            </Descriptions.Item>
+            <Descriptions.Item label="Description" span={2}>{quote.description}</Descriptions.Item>
             <Descriptions.Item label="Author">{quote.author}</Descriptions.Item>
             <Descriptions.Item label="Customer Name">{quote.customerName}</Descriptions.Item>
             <Descriptions.Item label="Customer Email">{quote.customerEmail}</Descriptions.Item>
             <Descriptions.Item label="Total Amount">
               {quote.totalAmount != null ? `$${Number(quote.totalAmount).toFixed(2)}` : '—'}
-            </Descriptions.Item>
-            <Descriptions.Item label="Status">
-              <QuoteStatusTag status={quote.status} />
             </Descriptions.Item>
           </Descriptions>
 
@@ -56,15 +68,34 @@ export default function QuoteDetailPage() {
             <Alert type="error" message={approvalError} showIcon style={{ marginBottom: 16 }} />
           )}
 
-          {canSendToApproval && (
-            <Button
-              type="primary"
-              loading={approvalLoading}
-              onClick={submitToApproval}
+          <Space wrap>
+            {canSendToApproval && (
+              <Button
+                type="primary"
+                loading={approvalLoading}
+                onClick={submitToApproval}
+              >
+                Send to Approval
+              </Button>
+            )}
+            {canEdit && (
+              <Button onClick={() => navigate(`/quotes/${id}/edit`)}>
+                Edit
+              </Button>
+            )}
+            <Popconfirm
+              title="Delete this quote?"
+              description="This action cannot be undone."
+              onConfirm={handleDelete}
+              okText="Delete"
+              okButtonProps={{ danger: true }}
+              cancelText="Cancel"
             >
-              Send to Approval
-            </Button>
-          )}
+              <Button danger loading={deleteLoading}>
+                Delete
+              </Button>
+            </Popconfirm>
+          </Space>
         </Card>
       )}
     </div>

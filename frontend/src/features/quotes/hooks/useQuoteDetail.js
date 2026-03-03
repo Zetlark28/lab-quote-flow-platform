@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { getQuoteById, sendToApproval } from '../../../api/quoteApi';
+import { getQuoteById, sendToApproval, deleteQuote } from '../../../api/quoteApi';
 
 export function useQuoteDetail(id) {
   const [quote, setQuote] = useState(null);
@@ -7,6 +7,8 @@ export function useQuoteDetail(id) {
   const [error, setError] = useState(null);
   const [approvalLoading, setApprovalLoading] = useState(false);
   const [approvalError, setApprovalError] = useState(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const fetchQuote = useCallback(async () => {
     if (!id) return;
@@ -26,7 +28,9 @@ export function useQuoteDetail(id) {
     setApprovalLoading(true);
     setApprovalError(null);
     try {
-      const res = await sendToApproval(id);
+      await sendToApproval(id);
+      // API returns void; refetch to get updated status
+      const res = await getQuoteById(id);
       setQuote(res.data);
     } catch (err) {
       setApprovalError(err.response?.data?.message || err.message || 'Failed to send to approval');
@@ -35,5 +39,22 @@ export function useQuoteDetail(id) {
     }
   }, [id]);
 
-  return { quote, loading, error, fetchQuote, approvalLoading, approvalError, submitToApproval };
+  const removeQuote = useCallback(async () => {
+    setDeleteLoading(true);
+    setDeleteError(null);
+    try {
+      await deleteQuote(id);
+    } catch (err) {
+      setDeleteError(err.response?.data?.message || err.message || 'Failed to delete quote');
+      throw err;
+    } finally {
+      setDeleteLoading(false);
+    }
+  }, [id]);
+
+  return {
+    quote, loading, error, fetchQuote,
+    approvalLoading, approvalError, submitToApproval,
+    deleteLoading, deleteError, removeQuote,
+  };
 }
