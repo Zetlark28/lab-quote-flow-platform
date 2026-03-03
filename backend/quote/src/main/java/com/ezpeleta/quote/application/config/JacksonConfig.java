@@ -1,4 +1,4 @@
-package com.ezpeleta.quote.config;
+package com.ezpeleta.quote.application.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

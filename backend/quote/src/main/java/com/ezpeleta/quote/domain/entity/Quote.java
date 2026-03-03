@@ -1,6 +1,6 @@
 package com.ezpeleta.quote.domain.entity;
 
-import com.ezpeleta.quote.common.entity.BaseEntity;
+import com.ezpeleta.quote.application.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

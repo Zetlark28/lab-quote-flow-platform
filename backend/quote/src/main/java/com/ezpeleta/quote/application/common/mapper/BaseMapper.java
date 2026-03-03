@@ -1,7 +1,7 @@
-package com.ezpeleta.quote.common.mapper;
+package com.ezpeleta.quote.application.common.mapper;
 
-import com.ezpeleta.quote.common.dto.BaseDto;
-import com.ezpeleta.quote.common.entity.BaseEntity;
+import com.ezpeleta.quote.application.common.dto.BaseDto;
+import com.ezpeleta.quote.application.common.entity.BaseEntity;
 
 import java.util.List;
 
@@ -14,6 +14,6 @@ public interface BaseMapper<E extends BaseEntity, DTO extends BaseDto> {
 
     List<E> toEntityList(List<DTO> dtos);
 
-    E updateEntityFromDto(DTO dto, E entity);
+    void updateEntityFromDto(DTO dto, E entity);
 
 }

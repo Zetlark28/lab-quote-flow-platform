@@ -1,7 +1,7 @@
 package com.ezpeleta.quote.domain.entity;
 
 
-import com.ezpeleta.quote.common.entity.BaseEntity;
+import com.ezpeleta.quote.application.common.entity.BaseEntity;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
