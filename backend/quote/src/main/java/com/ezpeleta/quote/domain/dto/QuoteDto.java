@@ -1,13 +1,15 @@
 package com.ezpeleta.quote.domain.dto;
 
-import com.ezpeleta.quote.common.dto.BaseDto;
+import com.ezpeleta.quote.application.common.dto.BaseDto;
 import com.ezpeleta.quote.domain.entity.QuoteStatusEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class QuoteDto extends BaseDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -19,6 +21,7 @@ public class QuoteDto extends BaseDto {
 
     private String customerName;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private QuoteStatusEnum status;
 
     private String customerEmail;

@@ -21,7 +21,6 @@ public class QuoteMapperImpl implements QuoteMapper {
         dto.setStatus(entity.getStatus());
         dto.setCustomerEmail(entity.getCustomerEmail());
         dto.setTotalAmount(entity.getTotalAmount());
-
         return dto;
     }
 
@@ -59,14 +58,16 @@ public class QuoteMapperImpl implements QuoteMapper {
     }
 
     @Override
-    public Quote updateEntityFromDto(QuoteDto dto, Quote entity) {
+    public void updateEntityFromDto(QuoteDto dto, Quote entity) {
         if (dto == null || entity == null) {
-            return null;
+            return;
         }
 
-        Quote entityUpdate = new Quote();
+        entity.setAuthor(dto.getAuthor());
+        entity.setDescription(dto.getDescription());
+        entity.setCustomerName(dto.getCustomerName());
+        entity.setCustomerEmail(dto.getCustomerEmail());
+        entity.setTotalAmount(dto.getTotalAmount());
 
-
-        return entityUpdate;
     }
 }
