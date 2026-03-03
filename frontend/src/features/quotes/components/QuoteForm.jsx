@@ -1,6 +1,6 @@
 import { Form, Input, InputNumber, Button, Space } from 'antd';
 
-export default function QuoteForm({ onFinish, loading }) {
+export default function QuoteForm({ onFinish, loading, initialValues, submitLabel = 'Create Quote', onCancel }) {
   const [form] = Form.useForm();
 
   return (
@@ -8,6 +8,7 @@ export default function QuoteForm({ onFinish, loading }) {
       form={form}
       layout="vertical"
       onFinish={onFinish}
+      initialValues={initialValues}
       style={{ maxWidth: 600 }}
     >
       <Form.Item
@@ -49,8 +50,11 @@ export default function QuoteForm({ onFinish, loading }) {
       <Form.Item>
         <Space>
           <Button type="primary" htmlType="submit" loading={loading}>
-            Create Quote
+            {submitLabel}
           </Button>
+          {onCancel && (
+            <Button onClick={onCancel}>Cancel</Button>
+          )}
         </Space>
       </Form.Item>
     </Form>

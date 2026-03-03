@@ -19,9 +19,9 @@ export default function MainLayout({ children }) {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header style={{ display: 'flex', alignItems: 'center', gap: 32, padding: '0 24px' }}>
-        <Title level={4} style={{ color: '#fff', margin: 0, whiteSpace: 'nowrap' }}>
-          Quote Flow Platform
+      <Header style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '0 16px', flexWrap: 'wrap' }}>
+        <Title level={4} style={{ color: '#fff', margin: 0, whiteSpace: 'nowrap', flexShrink: 0 }}>
+          Quote Flow
         </Title>
         <Menu
           theme="dark"
@@ -33,9 +33,10 @@ export default function MainLayout({ children }) {
             onClick: () => navigate(item.key),
           }))}
           style={{ flex: 1, minWidth: 0 }}
+          overflowedIndicator={null}
         />
       </Header>
-      <Content style={{ padding: 24, maxWidth: 1200, margin: '0 auto', width: '100%' }}>
+      <Content style={{ padding: '16px', maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box' }}>
         {children}
       </Content>
     </Layout>

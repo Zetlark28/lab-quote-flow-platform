@@ -3,6 +3,7 @@ import MainLayout from '../layouts/MainLayout';
 import QuoteListPage from '../features/quotes/pages/QuoteListPage';
 import QuoteCreatePage from '../features/quotes/pages/QuoteCreatePage';
 import QuoteDetailPage from '../features/quotes/pages/QuoteDetailPage';
+import QuoteEditPage from '../features/quotes/pages/QuoteEditPage';
 
 export default function AppRouter() {
   return (
@@ -12,6 +13,7 @@ export default function AppRouter() {
         <Route path="/quotes" element={<QuoteListPage />} />
         <Route path="/quotes/create" element={<QuoteCreatePage />} />
         <Route path="/quotes/:id" element={<QuoteDetailPage />} />
+        <Route path="/quotes/:id/edit" element={<QuoteEditPage />} />
       </Routes>
     </MainLayout>
   );

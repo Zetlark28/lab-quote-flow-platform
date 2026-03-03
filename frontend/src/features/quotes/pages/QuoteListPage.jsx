@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography, Select, Space, Input, Button, Alert } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useQuoteList } from '../hooks/useQuoteList';
@@ -9,14 +9,25 @@ const { Option } = Select;
 
 export default function QuoteListPage() {
   const navigate = useNavigate();
-  const { quotes, loading, error, fetchById } = useQuoteList();
+  const { quotes, loading, error, fetchById, fetchAll } = useQuoteList();
   const [searchId, setSearchId] = useState('');
   const [statusFilter, setStatusFilter] = useState(null);
+
+  useEffect(() => {
+    fetchAll();
+  }, [fetchAll]);
 
   const handleSearch = () => {
     if (searchId.trim()) {
       fetchById(searchId.trim());
+    } else {
+      fetchAll();
     }
+  };
+
+  const handleClear = () => {
+    setSearchId('');
+    fetchAll();
   };
 
   return (
@@ -36,7 +47,7 @@ export default function QuoteListPage() {
           onPressEnter={handleSearch}
           style={{ width: 200 }}
           allowClear
-          onClear={() => setSearchId('')}
+          onClear={handleClear}
         />
         <Button onClick={handleSearch} type="default">
           Search
@@ -59,7 +70,12 @@ export default function QuoteListPage() {
         <Alert type="error" message={error} style={{ marginBottom: 16 }} showIcon />
       )}
 
-      <QuoteTable quotes={quotes} loading={loading} statusFilter={statusFilter} />
+      <QuoteTable
+        quotes={quotes}
+        loading={loading}
+        statusFilter={statusFilter}
+        onDeleted={fetchAll}
+      />
     </div>
   );
 }
